@@ -2,7 +2,7 @@
 
 # get the amount of lines read for saving. 
 # Using readlines() 
-commentCasheFileName = 'output/CommentCashe.txt'
+commentCasheFileName = 'CommentCache.txt'
 commentCashe = open(commentCasheFileName, 'r', encoding="utf8") 
 commentCasheLines = commentCashe.readlines()
 # get the latest line count
