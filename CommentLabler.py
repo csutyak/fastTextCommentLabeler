@@ -2,6 +2,17 @@
 
 # get the amount of lines read for saving. 
 # Using readlines() 
+
+commentDataFileName = input("Please enter filename for unlabled comments: ")
+
+while True:   # repeat until the try statement succeeds
+    try:
+        allComments = open(commentDataFileName, "r", encoding="utf8")
+        break
+    except IOError:
+        commentDataFileName = input("Could not open file! Please enter a valid filename for unlabed Comments: ")
+        # restart the loop
+
 commentCasheFileName = 'CommentCache.txt'
 commentCashe = open(commentCasheFileName, 'r', encoding="utf8") 
 commentCasheLines = commentCashe.readlines()
@@ -22,8 +33,7 @@ def appendLine(fileName, text):
         file.write(text + '\n')
     file.close()
 
-commentDataFileName = "AllComments.txt"
-labelOutputFileName = "output/commentsLabeled.txt"
+labelOutputFileName = "commentsLabeled.txt"
 
 #1 for great comment
 #2 for bad comment :(
@@ -32,9 +42,7 @@ catagories = ["1","2","3"]
 categoryPrefix = "__label__"
 workingLineCtr = 0
 
-allComments = open(commentDataFileName, "r", encoding="utf8")
 allCommentLines = allComments.readlines()
-
 
 for commentLine in allCommentLines:
 
@@ -60,4 +68,5 @@ for commentLine in allCommentLines:
                 print("ERROR: PLEASE INPUT PROPER CATEGORY OR 'exit' TO EXIT")
 
     workingLineCtr += 1
-    
+
+print("End Of File!")
