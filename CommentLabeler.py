@@ -2,79 +2,83 @@
 
 # get the amount of lines read for saving. 
 # Using readlines() 
-commentDataFileName = input("Please enter filename for unlabled comments: ")
 
-while True:   # repeat until the try statement succeeds
-    try:
-        allComments = open(commentDataFileName, "r", encoding="utf8")
-        break
-    except IOError:
-        commentDataFileName = input("Could not open file! Please enter a valid filename for unlabed Comments: ")
-        # restart the loop
+def CommentLabeler():
+    commentDataFileName = input("Please enter filename for unlabled comments: ")
 
-commentCasheFileName = 'CommentCache.txt'
-commentCashe = open(commentCasheFileName, 'r', encoding="utf8") 
-commentCasheLines = commentCashe.readlines()
-# get the latest line count
-lineCount = 0
-for line in commentCasheLines:
-    if line:
-        lineCount = int(line)
+    while True:   # repeat until the try statement succeeds
+        try:
+            allComments = open(commentDataFileName, "r", encoding="utf8")
+            break
+        except IOError:
+            commentDataFileName = input("Could not open file! Please enter a valid filename for unlabed Comments: ")
+            # restart the loop
 
-print("Starting from line: ", lineCount)
+    commentCasheFileName = 'CommentCache.txt'
+    commentCashe = open(commentCasheFileName, 'r', encoding="utf8") 
+    commentCasheLines = commentCashe.readlines()
+    # get the latest line count
+    lineCount = 0
+    for line in commentCasheLines:
+        if line:
+            lineCount = int(line)
 
-# appends text to file on a new line
-def appendLine(fileName, text):
-    file = open(fileName, "a", encoding="utf8")
-    if(text[-1] == '\n'): 
-        file.write(text)
-    else:
-        file.write(text + '\n')
-    file.close()
+    print("Starting from line: ", lineCount)
 
-labelOutputFileName = "commentsLabeled.txt"
+    # appends text to file on a new line
+    def appendLine(fileName, text):
+        file = open(fileName, "a", encoding="utf8")
+        if(text[-1] == '\n'): 
+            file.write(text)
+        else:
+            file.write(text + '\n')
+        file.close()
 
-catagories = []
-commentLabelConfigFileName = 'commenLabelConfig.txt'
-commentLabelConfig = open(commentLabelConfigFileName, 'r', encoding="utf8") 
-commentLabelConfigLines = commentLabelConfig.readlines()
-# get the latest line count
-lineCount = 0
-for line in commentLabelConfigLines:
-    if line:
-        catagories.append(line.strip("\n"))
-categoryPrefix = "__label__"
-workingLineCtr = 0
+    labelOutputFileName = "commentsLabeled.txt"
 
-print("possible catagories: ")
-for catagory in catagories:
-    print(catagory)
+    catagories = []
+    commentLabelConfigFileName = 'commenLabelConfig.txt'
+    commentLabelConfig = open(commentLabelConfigFileName, 'r', encoding="utf8") 
+    commentLabelConfigLines = commentLabelConfig.readlines()
+    # get the latest line count
+    lineCount = 0
+    for line in commentLabelConfigLines:
+        if line:
+            catagories.append(line.strip("\n"))
+    categoryPrefix = "__label__"
+    workingLineCtr = 0
 
-allCommentLines = allComments.readlines()
+    print("possible catagories: ")
+    for catagory in catagories:
+        print(catagory)
 
-for commentLine in allCommentLines:
+    allCommentLines = allComments.readlines()
 
-    if workingLineCtr >= lineCount:
-        # delete comment markers
-        workingCommentLine = commentLine
-        if workingCommentLine[1] == "*":
-            workingCommentLine = workingCommentLine[:-4]
-        workingCommentLine = workingCommentLine[3:]
+    for commentLine in allCommentLines:
 
-        loopFlag = True
-        while loopFlag:
-            print(workingCommentLine)
-            userInput = input("input category for comment: ")
-            if userInput in catagories:
-                workingCommentLine = categoryPrefix + userInput + " " + workingCommentLine
-                appendLine(labelOutputFileName, workingCommentLine)
-                loopFlag = False
-            elif userInput.lower() == "exit":
-                appendLine(commentCasheFileName, str(workingLineCtr))
-                exit()
-            else:
-                print("ERROR: PLEASE INPUT PROPER CATEGORY OR 'exit' TO EXIT")
+        if workingLineCtr >= lineCount:
+            # delete comment markers
+            workingCommentLine = commentLine
+            if workingCommentLine[1] == "*":
+                workingCommentLine = workingCommentLine[:-4]
+            workingCommentLine = workingCommentLine[3:]
 
-    workingLineCtr += 1
+            loopFlag = True
+            while loopFlag:
+                print(workingCommentLine)
+                userInput = input("input category for comment: ")
+                if userInput in catagories:
+                    workingCommentLine = categoryPrefix + userInput + " " + workingCommentLine
+                    appendLine(labelOutputFileName, workingCommentLine)
+                    loopFlag = False
+                elif userInput.lower() == "exit":
+                    appendLine(commentCasheFileName, str(workingLineCtr))
+                    print("exiting Comment Labeler")
+                    return
+                else:
+                    print("ERROR: PLEASE INPUT PROPER CATEGORY OR 'exit' TO EXIT")
 
-print("End Of File!")
+        workingLineCtr += 1
+
+    print("End Of File!")
+    return
