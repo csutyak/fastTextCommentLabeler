@@ -2,7 +2,6 @@
 
 # get the amount of lines read for saving. 
 # Using readlines() 
-
 commentDataFileName = input("Please enter filename for unlabled comments: ")
 
 while True:   # repeat until the try statement succeeds
@@ -35,12 +34,21 @@ def appendLine(fileName, text):
 
 labelOutputFileName = "commentsLabeled.txt"
 
-#1 for great comment
-#2 for bad comment :(
-#3 for not definable
-catagories = ["1","2","3"]
+catagories = []
+commentLabelConfigFileName = 'commenLabelConfig.txt'
+commentLabelConfig = open(commentLabelConfigFileName, 'r', encoding="utf8") 
+commentLabelConfigLines = commentLabelConfig.readlines()
+# get the latest line count
+lineCount = 0
+for line in commentLabelConfigLines:
+    if line:
+        catagories.append(line.strip("\n"))
 categoryPrefix = "__label__"
 workingLineCtr = 0
+
+print("possible catagories: ")
+for catagory in catagories:
+    print(catagory)
 
 allCommentLines = allComments.readlines()
 
